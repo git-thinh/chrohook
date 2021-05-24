@@ -4,8 +4,10 @@
 
 using CefSharp.WinForms;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace CefSharp.MinimalExample.WinForms
 {
@@ -15,9 +17,28 @@ namespace CefSharp.MinimalExample.WinForms
 
     public class Program
     {
+        static string __HOOK = ConfigurationManager.AppSettings["HOOK"].ToLower();
+
         [STAThread]
         public static int Main(string[] args)
         {
+            bool ok = string.IsNullOrWhiteSpace(__HOOK);
+            string file = "";
+            if (ok)
+            {
+                file = "hook/" + __HOOK + "/setting.json";
+                ok = File.Exists(file);
+            }
+
+            if (ok) { 
+            
+            }
+
+            if (ok == false) {
+                MessageBox.Show("Can not find the file: " + file);
+                return 0;
+            }
+
 
             //Only required for PlatformTarget of AnyCPU
             AppDomain.CurrentDomain.AssemblyResolve += Resolver;

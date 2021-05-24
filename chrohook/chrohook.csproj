@@ -42,13 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\hook\zalo\hook.json" Link="hook\zalo\hook.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="..\..\hook\zalo\setting.json" Link="hook\zalo\setting.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CefSharp.WinForms" Version="89.0.170" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,12 +59,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\hook\zalo\account.js" Link="hook\zalo\account.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\hook\zalo\analytics.js" Link="hook\zalo\analytics.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\hook\zalo\login.js" Link="hook\zalo\login.js" />
     <None Include="..\..\hook\zalo\main.js" Link="hook\zalo\main.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

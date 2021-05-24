@@ -7,14 +7,6 @@ using System.Threading.Tasks;
 
 namespace CefSharp.MinimalExample.WinForms
 {
-    public interface IMain
-    {
-        void logClear();
-        void logUrl(string url);
-        string getData(string url);
-        string getType(string url);
-    }
-
     public class CustomResourceRequestHandler : ResourceRequestHandler
     {
         readonly string data;
