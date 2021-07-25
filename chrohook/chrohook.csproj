@@ -33,12 +33,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin.net472\**" />
     <Compile Remove="bin\**" />
     <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="bin.net472\**" />
     <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="obj\**" />
+    <None Remove="bin.net472\**" />
     <None Remove="bin\**" />
     <None Remove="obj\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.PublishSingleFile.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,16 +66,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\hook\zalo\analytics.js" Link="hook\zalo\analytics.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="..\..\hook\zalo\analytics.js" Link="hook\zalo\analytics.js" />
     <None Include="..\..\hook\zalo\login.js" Link="hook\zalo\login.js" />
-    <None Include="..\..\hook\zalo\main.js" Link="hook\zalo\main.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\hook\zalo\session-sdk.min.js" Link="hook\zalo\session-sdk.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="..\..\hook\zalo\main.js" Link="hook\zalo\main.js" />
+    <None Include="..\..\hook\zalo\session-sdk.min.js" Link="hook\zalo\session-sdk.min.js" />
+    <None Include="..\..\hook\zalo\_.js" Link="hook\zalo\_.js" />
   </ItemGroup>
   
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.WindowsDesktop" />

@@ -8,10 +8,9 @@ namespace CefSharp.MinimalExample.WinForms
 {
     public interface IMain
     {
+        void callApi(string message);
         void logClear();
-        void logUrl(string url);
-        string getData(string url);
-        string getType(string url);
+        void logWrite(string text);
     }
 
     public class oHookSite
@@ -19,10 +18,12 @@ namespace CefSharp.MinimalExample.WinForms
         public string url { set; get; }
         public string js { set; get; }
         public string name { set; get; }
+        public bool wait_event { set; get; }
     }
 
     public class oHook
     {
+        public string name { set; get; }
         public string url { set; get; }
         public oHookSite[] sites { set; get; }
     }

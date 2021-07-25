@@ -8,34 +8,54 @@ using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace CefSharp.MinimalExample.WinForms
 {
     public static class UrlEx{
         public static string __urlRoot(this string url) => url.Split('?')[0].Split('#')[0].ToLower();
+
+        public static oHookSite __GetByJsHook(this oHook hook, string urlMain, string urlJsHook)
+        {
+            if (string.IsNullOrWhiteSpace(urlMain)) return null;
+            string url = urlMain.__urlRoot();
+            string jsHook = urlJsHook.__urlRoot();
+            var site = hook.sites.Where(x => 
+                x.url.ToLower() == url
+                && x.js.ToLower() == jsHook).Take(1).SingleOrDefault();
+            return site;
+        }
     }
 
     public class Program
     {
-        static string __HOOK = ConfigurationManager.AppSettings["HOOK"].ToLower();
-
+        static IMain __main;
+        static string __hookName = ConfigurationManager.AppSettings["HOOK"].ToLower();
+        static string __path = ConfigurationManager.AppSettings["PATH"].ToLower();
+        static oHook __hookSite = null;
         [STAThread]
         public static int Main(string[] args)
         {
-            bool ok = string.IsNullOrWhiteSpace(__HOOK);
+            bool ok = !string.IsNullOrWhiteSpace(__hookName);
             string file = "";
             if (ok)
             {
-                file = "hook/" + __HOOK + "/setting.json";
+                file = __path+ "hook/" + __hookName + "/setting.json";
                 ok = File.Exists(file);
             }
 
-            if (ok) { 
-            
+            if (ok) {
+                try
+                {
+                    __hookSite = JsonConvert.DeserializeObject<oHook>(File.ReadAllText(file));
+                }
+                catch {
+                    ok = false;
+                }
             }
 
-            if (ok == false) {
-                MessageBox.Show("Can not find the file: " + file);
+            if (ok == false || __hookSite == null) {
+                MessageBox.Show("File invalid: " + file);
                 return 0;
             }
 
@@ -65,15 +85,19 @@ namespace CefSharp.MinimalExample.WinForms
             settings.CefCommandLineArgs.Add("use-fake-ui-for-media-stream");
             //For screen sharing add (see https://bitbucket.org/chromiumembedded/cef/issues/2582/allow-run-time-handling-of-media-access#comment-58677180)
             settings.CefCommandLineArgs.Add("enable-usermedia-screen-capturing");
-
+             
             //Perform dependency check to make sure all relevant resources are in our output directory.
             Cef.Initialize(settings, performDependencyCheck: true, browserProcessHandler: null);
 
-            var browser = new BrowserForm();
+            var browser = new BrowserForm(__hookSite);
+            __main = (IMain)browser;
             Application.Run(browser);
 
             return 0;
         }
+
+        public static void callApi(string data) => __main.callApi(data);
+        public static void logWrite(string text)=> __main.logWrite(text);
 
         // Will attempt to load missing assembly from either x86 or x64 subdir
         //when PlatformTarget is AnyCPU
